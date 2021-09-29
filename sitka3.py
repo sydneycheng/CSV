@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import csv
-from datetime import date, datetime
+from datetime import datetime
 
 
-open_file = open("sitka_weather_07-2018_simple.csv", "r")
+open_file = open("sitka_weather_2018_simple.csv", "r")
 
 csv_file = csv.reader(open_file,delimiter=",")
 
