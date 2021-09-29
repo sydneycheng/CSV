@@ -3,7 +3,7 @@ import csv
 from datetime import datetime
 
 
-open_file = open("sitka_weather_2018_simple.csv", "r")
+open_file = open("death_valley_2018_simple.csv", "r")
 
 csv_file = csv.reader(open_file,delimiter=",")
 
@@ -14,9 +14,8 @@ print(type(header_row)) #would return a list bcs the header is a list
 for index, column_header in enumerate(header_row): #enumerate is a function used w/ lists
     print(index, column_header)
 
-#testing to convert date from string
-mydate = datetime.strptime('2018-07-01','%Y-%m-%d')
-print(type(mydate))
+
+
 
 
 
@@ -27,15 +26,24 @@ lows = []
 
 
 for row in csv_file:
-    highs.append(int(row[5]))   #append adds to the empty list
-    lows.append(int(row[6]))
-    the_date =  datetime.strptime(row[2],'%Y-%m-%d')
-    dates.append(the_date)
+    try:
+        the_date =  datetime.strptime(row[2],'%Y-%m-%d')
+        high = int(row[4])
+        low = int(row[5])
+    except ValueError:
+        print(f"Missing data for {the_date}")   #f-string - allows us to incorporate variables directly into our statement
+                                                #curly brackets represent variables
+    else:
+        highs.append(int(row[4]))   #append adds to the empty list
+        lows.append(int(row[5]))
+        dates.append(the_date)
 
-print(highs)
-print(dates)
+# print(highs)
+# print(dates)
 
 
+
+'''
 
 fig = plt.figure()
 
@@ -70,3 +78,6 @@ plt.title("Lows")
 plt.suptitle("Highs and Lows of Sitka, Alaska")
 
 plt.show()
+
+
+'''
