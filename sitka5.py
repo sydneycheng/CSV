@@ -9,7 +9,7 @@ csv_file = csv.reader(open_file,delimiter=",")
 
 header_row = next(csv_file)
 
-#print(type(header_row)) #would return a list bcs the header is a list
+print(type(header_row)) #would return a list bcs the header is a list
 
 for index, column_header in enumerate(header_row): #enumerate is a function used w/ lists
     print(index, column_header)
@@ -42,7 +42,14 @@ for row in csv_file:
 
 fig = plt.figure()
 
-plt.title("Daily high and low temperatures, 2018\nDealth Valley", fontsize=16)
+if header_row[0] == "USC00042319":
+    plt.title("Daily high and low temperatures, 2018\nDealth Valley", fontsize=16)
+elif header_row[0] == "USW00025333":
+    plt.title("Daily high and low temperatures, \nSitka July 2018", fontsize=16)
+else:
+    plt.title("Daily high and low temperatures, \nSitka 2018", fontsize=16)
+
+# plt.title("Daily high and low temperatures, 2018\nDealth Valley", fontsize=16)
 plt.xlabel("",fontsize=12)
 plt.ylabel("Temperature (F)", fontsize=12)
 plt.tick_params(axis="both", which="major", labelsize=12)
