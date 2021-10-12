@@ -3,26 +3,31 @@ import csv
 from datetime import datetime
 
 
-open_file = open("death_valley_2018_simple.csv", "r")
+open_file = open("sitka_weather_2018_simple.csv", "r")
+open_file2 = open("death_valley_2018_simple.csv", "r")
 
 csv_file = csv.reader(open_file,delimiter=",")
+csv_file2 = csv.reader(open_file2,delimiter=",")
 
 header_row = next(csv_file)
+header_row2 = next(csv_file2)
 
-print(type(header_row)) #would return a list bcs the header is a list
-
-for index, column_header in enumerate(header_row): #enumerate is a function used w/ lists
-    print(index, column_header)
-
-
-
-
-highs = []
 dates = []
+highs = []
 lows = []
 
 
 for row in csv_file:
+    highs.append(int(row[5]))
+    lows.append(int(row[6]))
+    the_date =  datetime.strptime(row[2],'%Y-%m-%d')
+    dates.append(the_date)
+
+dates2 = []
+highs2 = []
+lows2 = []
+
+for row in csv_file2:
     try:
         the_date =  datetime.strptime(row[2],'%Y-%m-%d')
         high = int(row[4])
@@ -31,52 +36,30 @@ for row in csv_file:
         print(f"Missing data for {the_date}")   #f-string - allows us to incorporate variables directly into our statement
                                                 #curly brackets represent variables
     else:
-        highs.append(high)   #append adds to the empty list
-        lows.append(low)
-        dates.append(the_date)
-
-# print(highs)
-# print(dates)
+        highs2.append(high)   #append adds to the empty list
+        lows2.append(low)
+        dates2.append(the_date)
 
 
 
 fig = plt.figure()
 
-if header_row[0] == "USC00042319":
-    plt.title("Daily high and low temperatures, 2018\nDealth Valley", fontsize=16)
-elif header_row[0] == "USW00025333":
-    plt.title("Daily high and low temperatures, \nSitka July 2018", fontsize=16)
-else:
-    plt.title("Daily high and low temperatures, \nSitka 2018", fontsize=16)
+#subplot1 - sitka
+plt.subplot(2,1,1)
+plt.tick_params(axis = "both", which = "major", labelsize = 12)
+plt.plot(dates, highs, c = 'red', alpha=0.5)
+plt.plot(dates, lows, c = 'blue', alpha=0.5)
+plt.fill_between(dates,highs, lows, facecolor='blue', alpha = 0.1)
+plt.title('SITKA AIRPORT, AK US')
 
-# plt.title("Daily high and low temperatures, 2018\nDealth Valley", fontsize=16)
-plt.xlabel("",fontsize=12)
-plt.ylabel("Temperature (F)", fontsize=12)
-plt.tick_params(axis="both", which="major", labelsize=12)
-
-plt.plot(dates,highs,c="red", alpha=0.5) #this is where we gave the data to be plotted
-plt.plot(dates,lows, c="blue", alpha=0.5)
-
-plt.fill_between(dates,highs,lows, facecolor='blue', alpha=0.1)
+#subplot2 - death valley
+plt.subplot(2,1,2)
+plt.tick_params(axis = "both", which = "major", labelsize = 12)
+plt.plot(dates2, highs2, c = 'red', alpha=0.5)
+plt.plot(dates2, lows2, c = 'blue', alpha=0.5)
+plt.fill_between(dates2,highs2, lows2, facecolor='blue', alpha = 0.1)
+plt.title('DEATH VALLEY, CA US')
 
 fig.autofmt_xdate()
-
-plt.show()
-
-
-#subplots - subplot(row, columnm, index-tells us which one we're plotting) --> for our CSV proj: it will look like this: subplot(2,1,1)
-
-#subplot 1
-plt.subplot(2,1,1)
-plt.plot(dates,highs,c="red")
-plt.title("Highs")
-
-#subplot 2
-plt.subplot(2,1,2)
-plt.plot(dates,lows,c="blue")
-plt.title("Lows")
-
-
-plt.suptitle("Highs and Lows of Sitka, Alaska")
 
 plt.show()
